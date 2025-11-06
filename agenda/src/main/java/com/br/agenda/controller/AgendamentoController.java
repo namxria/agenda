@@ -2,7 +2,6 @@ package com.br.agenda.controller;
 
 import com.br.agenda.dto.CriarAgendamentoRequest;
 import com.br.agenda.dto.EditarAgendamentoRequest;
-import com.br.agenda.repository.AgendamentoRepository;
 import com.br.agenda.service.AgendamentoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +13,15 @@ public class AgendamentoController {
 
     private final AgendamentoService agendamentoService;
 
+    public AgendamentoController(AgendamentoService agendamentoService) {
+        this.agendamentoService = agendamentoService;
+    }
+
     @GetMapping
     public ModelAndView index(){
         var mv = new ModelAndView("mostrar_todos");
         var lista = agendamentoService.findAll();
-        mv.addAllObjects("agendamentos", lista);
+        mv.addObject("agendamentos", lista);
         return mv;
     }
 
@@ -42,7 +45,7 @@ public class AgendamentoController {
     @GetMapping("/criar")
     public ModelAndView criar() {
         var mv = new ModelAndView("agenda/novo_agendamento");
-        mv.addObject("criarAgendamentoRequest", new CriarAgendamentoRequest(null, null, null, null));
+        mv.addObject("criarAgendamentoRequest", new CriarAgendamentoRequest(null, null, null, null, null));
         return mv;
     }
 
@@ -50,10 +53,10 @@ public class AgendamentoController {
     public ModelAndView criar(@ModelAttribute  CriarAgendamentoRequest request) {
         ModelAndView mv;
         try {
-            var pokemon = agendamentoService.criar(request);
+            var agendamento = agendamentoService.criar(request);
             return new ModelAndView("redirect:/agenda/"+agendamento.getId());
         } catch (Exception e) {
-            mv = new ModelAndView("agenda/novo_pokemon");
+            mv = new ModelAndView("agenda/novo_agendamento");
             mv.addObject("criarAgendamentoRequest", request);
             mv.addObject("erro", e.getMessage());
             return mv;
@@ -67,8 +70,8 @@ public class AgendamentoController {
             return new ModelAndView("agenda/nao_ha_agendamento");
         }
         var mv = new ModelAndView("agenda/editar_agendamento");
-        var pokemon = optional.get();
-        var request = new EditarAgendamentoRequest(pokemon.getId(), pokemon.getNome(), pokemon.getTipo(), pokemon.getEstagio(), pokemon.getEstagio());
+        var agendamento = optional.get();
+        var request = new EditarAgendamentoRequest(agendamento.getId(), agendamento.getCliente(),agendamento.getData(), agendamento.getHorario(), agendamento.getCliente());
         mv.addObject("editarAgendamentoRequest", optional.get());
         return mv;
     }
@@ -76,10 +79,10 @@ public class AgendamentoController {
     public ModelAndView editar(@ModelAttribute EditarAgendamentoRequest request) {
         ModelAndView mv;
         try {
-            var pokemon = agendamentoService.editar(request);
-            return new ModelAndView("redirect:/agenda/"+pokemon.getId());
+            var agendamento = agendamentoService.editar(request);
+            return new ModelAndView("redirect:/agenda/"+agendamento.getId());
         } catch (Exception e) {
-            mv = new ModelAndView("agenda/editar_pokemon");
+            mv = new ModelAndView("agenda/editar_agendamento");
             mv.addObject("editarAgendamentoRequest", request);
             mv.addObject("erro", e.getMessage());
             return mv;
