@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1>Listagem de agendamentos</h1>
+<div>
+    <span><a href="/">Início</a></span>
+    <a href="/agenda/criar">Novo agendamento</a>
+</div>
+<div th:if="${agendamentos.isEmpty}">
+    <p>Não há agendamentos cadastrados</p>
+</div>
+<div th:unless="${agendamentos.isEmpty}">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Cliente</td>
+                <td>Data</td>
+                <td>Horário</td>
+                <td>Procedimento</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="a : ${agendamentos}" class="hover:bg-base-300"
+                th:onclick="'window.location.href=\'/agenda/' + ${p.id} + '\';'">
+                <td th:text="${a.id}">{a.id}</td>
+                <td th:text="${a.cliente}">{a.cliente}</td>
+                <td th:text="${a.data}">{a.data}</td>
+                <td th:text="${a.horario}">{a.horario}</td>
+                <td th:text="${a.procedimento}">{a.procedimento}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -19,7 +19,7 @@ public class AgendamentoController {
 
     @GetMapping
     public ModelAndView index(){
-        var mv = new ModelAndView("mostrar_todos");
+        var mv = new ModelAndView("/agenda/mostrar_todos");
         var lista = agendamentoService.findAll();
         mv.addObject("agendamentos", lista);
         return mv;
