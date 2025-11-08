@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1>Listagem de agendamentos</h1>
+<div>
+    <button type="button"><a href="/">Início</a></button>
+    <button type="button"><a href="/agenda/criar">Novo agendamento</a></button>
+</div>
+<div th:if="${agendamentos.isEmpty}">
+    <p>Não há agendamentos cadastrados</p>
+</div>
+<div th:unless="${agendamentos.isEmpty}">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Cliente</td>
+                <td>Data</td>
+                <td>Horário</td>
+                <td>Procedimento</td>
+                <td>Valor</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="a : ${agendamentos}">
+                <td th:text="${a.cliente}">{a.cliente}</td>
+                <td th:text="${#temporals.format(a.dataHora, 'dd/MM/yyyy')}">{a.dataHora}</td>
+                <td th:text="${#temporals.format(a.dataHora, 'HH:mm')+ 'h'}">{a.dataHora}</td>
+                <td th:text="${a.procedimento}">{a.procedimento}</td>
+                <td th:text="'R$' + ${a.valor}">{a.valor}</td>
+                <td><button type="button"><a th:href="@{/agenda/{id}(id=${a.id})}">Ver</a></button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

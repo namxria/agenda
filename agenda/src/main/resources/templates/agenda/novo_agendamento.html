@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+    <h1>Criar novo agendamento</h1>
+    <form th:action="@{/agenda/criar}" method="post" th:object="${criarAgendamentoRequest}">
+        <label for="cliente">
+            <span>Cliente</span>
+            <input id="cliente" th:field="*{cliente}" type="text" required>
+        </label>
+        <label for="dataHora">
+            <span>Data e horário</span>
+            <input id="dataHora" th:field="*{dataHora}" type="datetime-local" required>
+        </label>
+        <label for="procedimento">
+            <span>Procedimento</span>
+            <input id="procedimento" th:field="*{procedimento}" type="text" required>
+        </label>
+        <label for="valor">
+            <span>Valor</span>
+            <span>R$</span>
+            <input id="valor" th:field="*{valor}" type="text" required>
+        </label>
+        <div>
+            <button type="button"><a href="/agenda">Cancelar</a></button>
+            <button type="submit">Salvar</button>
+        </div>
+    </form>
+    <div th:if="${erro}">
+        <p th:text="${erro}"></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1 th:text="'Agendamento de ' + ${agendamento.cliente}">Agendamento de</h1>
+<div>
+    <button type="button"><a href="/">Início</a></button>
+    <button type="button"><a href="/agenda">Listagem de agendamentos</a></button>
+    <button type="button"><a th:href="@{/agenda/editar/{id}(id=${agendamento.id})}">Editar agendamento</a></button>
+    <button type="button" onclick="document.getElementById('dialog-delete').showModal()">Excluir</button>
+</div>
+<div>
+    <div>
+        <p><span>Cliente:</span> <span th:text="${agendamento.cliente}">{agendamento.cliente}</span></p>
+        <p><span>Data:</span> <span th:text="${#temporals.format(agendamento.dataHora, 'dd/MM/yyyy')}">{agendamento.dataHora}</span></p>
+        <p><span>Horário:</span> <span th:text="${#temporals.format(agendamento.dataHora, 'HH:mm') + 'h'}">{agendamento.dataHora}</span></p>
+        <p><span>Procedimento:</span> <span th:text="${agendamento.procedimento}">{agendamento.procedimento}</span></p>
+        <p><span>Valor:</span><span th:text="'R$' + ${agendamento.valor}">{agendamento.valor}</span></p>
+    </div>
+</div>
+<form>
+    <dialog id="dialog-delete" class="modal">
+        <div class="modal-box">
+            <h3>Excluir agendamento</h3>
+            <p>Tem certeza que deseja excluir esse agendamento?</p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Cancelar</button>
+                </form>
+                <form th:action="@{/agenda/{id}(id=*{id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button type="submit">Sim, excluir</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+</form>
+</body>
+</html>
