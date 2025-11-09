@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+    <h1>Editar cliente</h1>
+    <form th:action="@{/cliente/editar}" method="post" th:object="${editarClienteRequest}">
+        <input type="hidden" th:field="*{id}"/>
+        <label for="nome">
+            <span>Nome</span>
+            <input id="nome" th:field="*{nome}" type="text" required>
+        </label>
+        <br><br>
+        <label for="telefone">
+            <span>Telefone</span>
+            <input id="telefone" th:field="*{telefone}" type="tel" required>
+        </label>
+        <br><br>
+        <div>
+            <button type="button"><a href="/cliente">Cancelar</a></button>
+            <button type="submit">Salvar alteração</button>
+        </div>
+    </form>
+    <div th:if="${erro}">
+        <p th:text="${erro}"></p>
+    </div>
+    <script>
+        document.getElementById('telefone').addEventListener('input', function (e) {
+          let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
+          if (value.length > 11) value = value.slice(0, 11); // limita a 11 dígitos
+          if (value.length > 6) {
+            e.target.value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7)}`;
+          } else if (value.length > 2) {
+            e.target.value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+          } else {
+            e.target.value = value;
+          }
+        });
+    </script>
+</body>
+</html>

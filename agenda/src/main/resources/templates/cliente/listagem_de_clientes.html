@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1>Listagem de clientes</h1>
+<div>
+    <button type="button"><a href="/">Início</a></button>
+    <button type="button"><a href="/cliente/criar">Novo cliente</a></button>
+</div>
+<div th:if="${clientes.isEmpty}">
+    <p>Não há clientes cadastrados</p>
+</div>
+<div th:unless="${clientes.isEmpty}">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Nome</td>
+                <td>Telefone</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${clientes}">
+                <td th:text="${c.nome}">{c.nome}</td>
+                <td th:text="${c.telefone}">{c.telefone}</td>
+                <td><button type="button"><a th:href="@{/cliente/{id}(id=${c.id})}">Ver</a></button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

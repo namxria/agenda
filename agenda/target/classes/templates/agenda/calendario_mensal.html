@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1>Calendário</h1>
+<div>
+    <button type="button"><a href="/">Início</a></button>
+    <button type="button"><a href="/agenda/criar">Novo agendamento</a></button>
+</div>
+<br><br>
+<div>
+    <a th:href="@{/agenda/calendario_mensal(mes=${12}, ano=${ano-1})}" th:if="${mes == 1}" th:text="'< Mês anterior'"></a>
+    <a th:href="@{/agenda/calendario_mensal(mes=${mes-1}, ano=${ano})}" th:if="${mes > 1}" th:text="'< Mês anterior'"></a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <span th:text="${mes} + '/' + ${ano}"></span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a th:href="@{/agenda/calendario_mensal(mes=${1}, ano=${ano+1})}" th:if="${mes == 12}" th:text="'Próximo mês >'"></a>
+    <a th:href="@{/agenda/calendario_mensal(mes=${mes+1}, ano=${ano})}" th:if="${mes < 12}" th:text="'Próximo mês >'"></a>
+</div>
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Domingo</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+            <th>Sábado</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:each="semana : ${#numbers.sequence(0, 5)}">
+        <td th:each="diaSemana : ${#numbers.sequence(0,6)}"
+            th:with="dia=${primeiroDia.plusDays(semana * 7 + diaSemana - (primeiroDia.dayOfWeek.value))}">
+
+            <div th:if="${dia.monthValue == mes}">
+                <p th:text="${dia.dayOfMonth}"></p><br>
+
+                <div th:each="ag : ${agendamentos}"
+                     th:if="${ag.dataHora.toLocalDate().equals(dia)}">
+                    <a th:href="${ag.id}">
+                    <span th:text="${ag.cliente.nome}"></span> -
+                    <span th:text="${ag.procedimento.nome}"></span></a><br>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>

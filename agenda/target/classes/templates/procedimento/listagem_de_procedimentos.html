@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Agenda</title>
+</head>
+<body>
+<h1>Listagem de procedimentos</h1>
+<div>
+    <button type="button"><a href="/">Início</a></button>
+    <button type="button"><a href="/procedimento/criar">Novo procedimento</a></button>
+</div>
+<div th:if="${procedimentos.isEmpty}">
+    <p>Não há procedimentos cadastrados</p>
+</div>
+<div th:unless="${procedimentos.isEmpty}">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Nome</td>
+                <td>Valor</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${procedimentos}">
+                <td th:text="${c.nome}">{c.nome}</td>
+                <td th:text="'R$ ' + ${c.valor}">{c.valor}</td>
+                <td><button type="button"><a th:href="@{/procedimento/{id}(id=${c.id})}">Ver</a></button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

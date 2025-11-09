@@ -4,6 +4,8 @@ import com.br.agenda.dto.CriarAgendamentoRequest;
 import com.br.agenda.dto.EditarAgendamentoRequest;
 import com.br.agenda.entity.Agendamento;
 import com.br.agenda.repository.AgendamentoRepository;
+import com.br.agenda.repository.ClienteRepository;
+import com.br.agenda.repository.ProcedimentoRepository;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,17 @@ import java.util.Optional;
 @Service
 public class AgendamentoService {
     private final AgendamentoRepository agendamentoRepository;
+    private final ClienteRepository clienteRepository;
+    private final ProcedimentoRepository procedimentoRepository;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository){
+    public AgendamentoService(AgendamentoRepository agendamentoRepository, ClienteRepository clienteRepository, ProcedimentoRepository procedimentoRepository){
         this.agendamentoRepository = agendamentoRepository;
+        this.clienteRepository = clienteRepository;
+        this.procedimentoRepository = procedimentoRepository;
+    }
+
+    public List<Agendamento> findAll(){
+        return agendamentoRepository.findAll();
     }
 
     public List<Agendamento> findAllByOrderByDataHoraAsc(){
@@ -24,23 +34,21 @@ public class AgendamentoService {
 
     public Agendamento criar(CriarAgendamentoRequest request){
         StringBuilder builder = new StringBuilder();
-        if(Strings.isBlank(request.cliente())){
+        if(request.cliente() == null){
             builder.append("Favor, informar o nome do cliente.").append("\n");
+        }
+        if(request.procedimento() == null){
+            builder.append("Favor, informar o procedimento.").append("\n");
         }
         if(Strings.isBlank(String.valueOf(request.dataHora()))){
             builder.append("Favor, informar a data e o horário do agendamento.").append("\n");
         }
-        if(Strings.isBlank(request.procedimento())){
-            builder.append("Favor, informar o procedimento do agendamento.").append("\n");
-        }
-        if(Strings.isBlank(String.valueOf(request.valor()))){
-            builder.append("Favor, informar o valor do procedimento.").append("\n");
-        }
         var agendamento = new Agendamento();
-        agendamento.setCliente(request.cliente());
+        var cliente = clienteRepository.findById(request.cliente()).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        var procedimento = procedimentoRepository.findById(request.procedimento()).orElseThrow(() -> new RuntimeException("Procedimento não encontrado"));
+        agendamento.setCliente(cliente);
+        agendamento.setProcedimento(procedimento);
         agendamento.setDataHora(request.dataHora());
-        agendamento.setProcedimento(request.procedimento());
-        agendamento.setValor(request.valor());
         return agendamentoRepository.save(agendamento);
     }
 
@@ -50,23 +58,21 @@ public class AgendamentoService {
 
     public Agendamento editar(EditarAgendamentoRequest request){
         StringBuilder builder = new StringBuilder();
-        if(Strings.isBlank(request.cliente())){
+        if(request.cliente() == null){
             builder.append("Favor, informar o nome do cliente.").append("\n");
+        }
+        if(request.procedimento() == null){
+            builder.append("Favor, informar o procedimento.").append("\n");
         }
         if(Strings.isBlank(String.valueOf(request.dataHora()))){
             builder.append("Favor, informar a data e o horário do agendamento.").append("\n");
         }
-        if(Strings.isBlank(request.procedimento())){
-            builder.append("Favor, informar o procedimento do agendamento.").append("\n");
-        }
-        if(Strings.isBlank(String.valueOf(request.valor()))){
-            builder.append("Favor, informar o valor do procedimento.").append("\n");
-        }
         var old = agendamentoRepository.findById(request.id()).orElseThrow();
-        old.setCliente(request.cliente());
+        var cliente = clienteRepository.findById(request.cliente()).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        var procedimento = procedimentoRepository.findById(request.procedimento()).orElseThrow(() -> new RuntimeException("Procedimento não encontrado"));
+        old.setCliente(cliente);
+        old.setProcedimento(procedimento);
         old.setDataHora(request.dataHora());
-        old.setProcedimento(request.procedimento());
-        old.setValor(request.valor());
         return agendamentoRepository.save(old);
     }
 

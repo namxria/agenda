@@ -8,20 +8,31 @@
         <input type="hidden" th:field="*{id}"/>
         <label for="cliente">
             <span>Cliente</span>
-            <input id="cliente" th:field="*{cliente}" type="text" required>
+            <select id="cliente" th:field="*{cliente}" required>
+                <option value="">Selecione um cliente</option>
+                <option th:each="c : ${clientes}"
+                        th:value="${c.id}"
+                        th:text="${c.nome}">
+                </option>
+            </select>
         </label>
+        <br><br>
+        <label for="procedimento">
+            <span>Procedimento</span>
+            <select id="procedimento" th:field="*{procedimento}" required>
+                <option value="">Selecione um procedimento</option>
+                <option th:each="p : ${procedimento}"
+                        th:value="${p.id}"
+                        th:text="${p.nome}">
+                </option>
+            </select>
+        </label>
+        <br><br>
         <label for="data">
             <span>Data</span>
             <input id="data" th:field="*{dataHora}" type="datetime-local" required>
         </label>
-        <label for="procedimento">
-            <span>Procedimento</span>
-            <input id="procedimento" th:field="*{procedimento}" type="text" required>
-        </label>
-        <label for="valor">
-            <span>Valor</span>
-            <input id="valor" th:field="*{valor}" type="text" required>
-        </label>
+        <br><br>
         <div>
             <button type="button"><a href="/agenda">Cancelar</a></button>
             <button type="submit">Salvar alteração</button>

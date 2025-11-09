@@ -1,12 +1,8 @@
 package com.br.agenda.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -15,11 +11,14 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String cliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dataHora;
-    private String procedimento;
-    private BigDecimal valor;
+    @ManyToOne
+    @JoinColumn(name = "procedimento_id")
+    private Procedimento procedimento;
 
     public Long getId() {
         return id;
@@ -29,11 +28,11 @@ public class Agendamento {
         this.id = id;
     }
 
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
@@ -45,19 +44,12 @@ public class Agendamento {
         this.dataHora = dataHora;
     }
 
-    public String getProcedimento() {
+    public Procedimento getProcedimento() {
         return procedimento;
     }
 
-    public void setProcedimento(String procedimento) {
+    public void setProcedimento(Procedimento procedimento) {
         this.procedimento = procedimento;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 }
