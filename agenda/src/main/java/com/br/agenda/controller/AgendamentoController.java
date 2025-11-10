@@ -117,7 +117,7 @@ public class AgendamentoController {
         var primeiroDia = LocalDate.of(ano, mes, 1);
         var ultimoDia = primeiroDia.withDayOfMonth(primeiroDia.lengthOfMonth());
 
-        var agendamentos = agendamentoService.findAll();
+        var agendamentos = agendamentoService.findAllByOrderByDataHoraAsc();
 
         ModelAndView mv = new ModelAndView("agenda/calendario_mensal");
         mv.addObject("mes", mes);
@@ -128,3 +128,4 @@ public class AgendamentoController {
         return mv;
     }
     }
+
