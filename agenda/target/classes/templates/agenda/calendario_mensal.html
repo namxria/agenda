@@ -3,7 +3,7 @@
     <title>Agenda</title>
 </head>
 <body>
-<h1>Calendário</h1>
+<h1 th:text="'Calendário de ' + ${#temporals.monthName(primeiroDia)} + ' de ' + ${ano}"></h1>
 <div>
     <button type="button"><a href="/">Início</a></button>
     <button type="button"><a href="/agenda/criar">Novo agendamento</a></button>
@@ -41,6 +41,7 @@
                 <div th:each="ag : ${agendamentos}"
                      th:if="${ag.dataHora.toLocalDate().equals(dia)}">
                     <a th:href="${ag.id}">
+                    <span th:text="${#temporals.format(ag.dataHora, 'HH:mm')+ 'h'}"></span> |
                     <span th:text="${ag.cliente.nome}"></span> -
                     <span th:text="${ag.procedimento.nome}"></span></a><br>
                 </div>

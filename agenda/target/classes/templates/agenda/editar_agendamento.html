@@ -21,7 +21,7 @@
             <span>Procedimento</span>
             <select id="procedimento" th:field="*{procedimento}" required>
                 <option value="">Selecione um procedimento</option>
-                <option th:each="p : ${procedimento}"
+                <option th:each="p : ${procedimentos}"
                         th:value="${p.id}"
                         th:text="${p.nome}">
                 </option>

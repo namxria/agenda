@@ -88,6 +88,8 @@ public class AgendamentoController {
         var mv = new ModelAndView("agenda/editar_agendamento");
         var agendamento = optional.get();
         var request = new EditarAgendamentoRequest(agendamento.getId(), agendamento.getCliente().getId(), agendamento.getProcedimento().getId(), agendamento.getDataHora());
+        mv.addObject("clientes", clienteRepository.findAll());
+        mv.addObject("procedimentos", procedimentoRepository.findAll());
         mv.addObject("editarAgendamentoRequest", optional.get());
         return mv;
     }
@@ -107,8 +109,8 @@ public class AgendamentoController {
 
     @GetMapping("/calendario_mensal")
     public ModelAndView calendario(
-            @RequestParam(required = false) Integer mes,
-            @RequestParam(required = false) Integer ano) {
+            @RequestParam(name = "mes", required = false) Integer mes,
+            @RequestParam(name = "ano", required = false) Integer ano)  {
 
         var hoje = LocalDate.now();
         if (mes == null) mes = hoje.getMonthValue();
